@@ -1,14 +1,19 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
+            image 'maven:3-alpine' 
+            args '-v /root/.m2:/root/.m2' 
         }
     }
     stages {
-        stage('Build') {
+        stage('Git-checkout') {
+			steps {
+					git credentialsId: '9fd82d11-bcd3-4c2c-8cf0-0d9248a8f345', url: 'https://github.com/vivekragi/sample-spring-microservices.git'
+			}
+		}
+        stage('Build') { 
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package' 
             }
         }
         stage('Test') {
